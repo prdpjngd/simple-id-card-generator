@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ID Card Generator</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #f0f0f0;
+    }
+    .container {
+        display: flex;
+        width: 80%;
+        height: 80%;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        overflow: hidden;
+    }
+    .form-container, .preview-container {
+        width: 50%;
+        padding: 20px;
+        box-sizing: border-box;
+    }
+    .form-container {
+        background-color: #fff;
+    }
+    .preview-container {
+        background-color: #f9f9f9;
+    }
+    form {
+        display: flex;
+        flex-direction: column;
+    }
+    form label {
+        margin-bottom: 10px;
+    }
+    form input[type="text"], form select {
+        margin-bottom: 20px;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+    }
+    form input[type="file"] {
+        margin-bottom: 20px;
+    }
+    .preview {
+        text-align: center;
+    }
+
+    .id-card {
+        width: 320px;
+        height: 500px;
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        text-align: center;
+    }
+    .id-card img {
+        width:  150px;
+        height: 150px;
+        border-radius: 50%;
+        border: 2px black solid;
+        display: block;
+        margin: 0 auto;
+        background-image: cover;
+    }
+    .id-card h2 {
+        margin-top: 10px;
+        color: #333;
+    }
+    .id-card p {
+        margin-top: 5px;
+        color: #666;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <div class="form-container">
+        <h2>ID Card Details</h2>
+        <form id="idCardForm">
+            <label for="firstName">First Name:</label>
+            <input type="text" id="firstName" name="firstName" required>
+            
+            <label for="lastName">Last Name:</label>
+            <input type="text" id="lastName" name="lastName" required>
+            
+            <label for="category">Category:</label>
+            <select id="category" name="category" required>
+                <option value="Organiser">Organiser</option>
+                <option value="Member">Member</option>
+                <option value="Admin">Admin</option>
+            </select>
+            
+            <label for="profilePhoto">Profile Photo:</label>
+            <input type="file" id="profilePhoto" name="profilePhoto" accept="image/*" required>
+            
+            <button type="submit">Generate ID Card</button>
+        </form>
+    </div>
+    
+    <div class="preview-container">
+        <h2>ID Card Preview</h2>
+        <div class="preview" id="123">
+            <div class="id-card" id="id-card-id">
+                <h2> T10 KPL</h2>
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTk1wr1yrOBQiwirwFdBeIUAeIU9vPg09-NpaXWEipuyQ&s" alt="Event Logo">
+                <h3 id="fullName">First Name Last Name</h3>
+                <p id="category_print">Category</p>
+            </div>
+        </div>
+
+        <button onclick="printIdCard()">Print ID Card</button>
+    </div>
+</div>
+
+<script>
+
+let background_logic  = [{
+    category_name: "Organiser",
+    background_img: "/Users/pradeepjangid/serverless-mercury/soniji/Organizer.png",
+},{
+    category_name: "Member",
+    background_img: "/Users/pradeepjangid/serverless-mercury/soniji/Member.png",
+},{
+    category_name: "Admin",
+    background_img: "/Users/pradeepjangid/serverless-mercury/soniji/Admin.png",
+}]
+
+function printIdCard() {
+    var originalBody = document.body.innerHTML;
+    var idCardContent = document.getElementById('123').innerHTML;
+    document.body.innerHTML = idCardContent;
+    window.print();
+    document.body.innerHTML = originalBody;
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Get form inputs
+    var firstNameInput = document.getElementById('firstName');
+    var lastNameInput = document.getElementById('lastName');
+    var profilePhotoInput = document.getElementById('profilePhoto');
+    var categoryInput = document.getElementById('category');
+
+
+    // Get elements in the ID card preview
+    var idCardFirstName = document.getElementById('fullName');
+    var idCardImage = document.querySelector('.preview .id-card img');
+    var categoryIdCard = document.getElementById('category_print');
+    var idCardPreview = document.getElementById('id-card-id');
+
+    // Add event listeners to form inputs
+    firstNameInput.addEventListener('input', updateIdCardPreview);
+    lastNameInput.addEventListener('input', updateIdCardPreview);
+    profilePhotoInput.addEventListener('change', updateIdCardPreview);
+    categoryInput.addEventListener('change', updateIdCardPreview);
+
+    // Function to update ID card preview
+    function updateIdCardPreview() {
+        idCardFirstName.textContent = firstNameInput.value + ' ' +lastNameInput.value;
+        categoryIdCard.textContent = categoryInput.value;
+        let _tmp = background_logic.find(i=>i.category_name===categoryInput.value);
+        idCardPreview.style.backgroundImage = "url('"+_tmp.background_img+"')";
+        idCardPreview.style.backgroundSize='cover';
+        
+
+        // Display profile photo if selected
+        if (profilePhotoInput.files && profilePhotoInput.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                idCardImage.src = e.target.result;
+            };
+            reader.readAsDataURL(profilePhotoInput.files[0]);
+        }
+    }
+});
+
+</script>
+
+</body>
+</html>
