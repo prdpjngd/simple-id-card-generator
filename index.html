@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -64,21 +65,23 @@
         text-align: center;
     }
     .id-card img {
-        width:  150px;
-        height: 150px;
+        width: 215px;
+        height: 215px;
         border-radius: 50%;
         border: 2px black solid;
         display: block;
-        margin: 0 auto;
+        margin-top: 140px;
+        margin-left: 60px;
+        margin-right: auto;
         background-image: cover;
     }
-    .id-card h2 {
-        margin-top: 10px;
-        color: #333;
+    .id-card h3 {
+        margin-top: 15px;
+        margin-bottom: 5px;
     }
     .id-card p {
         margin-top: 5px;
-        color: #666;
+        margin-bottom: 5px;
     }
 </style>
 </head>
@@ -88,17 +91,18 @@
     <div class="form-container">
         <h2>ID Card Details</h2>
         <form id="idCardForm">
-            <label for="firstName">First Name:</label>
+            <label for="firstName">Full Name:</label>
             <input type="text" id="firstName" name="firstName" required>
             
-            <label for="lastName">Last Name:</label>
-            <input type="text" id="lastName" name="lastName" required>
+            <label for="SubCategory">Sub Category</label>
+            <input type="text" id="SubCategory" name="SubCategory" required>
             
             <label for="category">Category:</label>
             <select id="category" name="category" required>
-                <option value="Organiser">Organiser</option>
+                <option value="Service Provider">Service Provider</option>
                 <option value="Member">Member</option>
-                <option value="Admin">Admin</option>
+                <option value="Worker">Worker</option>
+                <option value="Player">Player</option>
             </select>
             
             <label for="profilePhoto">Profile Photo:</label>
@@ -112,10 +116,11 @@
         <h2>ID Card Preview</h2>
         <div class="preview" id="123">
             <div class="id-card" id="id-card-id">
-                <h2> T10 KPL</h2>
+                <!-- <h2> T10 KPL</h2> -->
                 <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTk1wr1yrOBQiwirwFdBeIUAeIU9vPg09-NpaXWEipuyQ&s" alt="Event Logo">
                 <h3 id="fullName">First Name Last Name</h3>
-                <p id="category_print">Category</p>
+                <!-- <p id="category_print">Category</p> -->
+                <p id="subcategory_print"></p>
             </div>
         </div>
 
@@ -126,14 +131,21 @@
 <script>
 
 let background_logic  = [{
-    category_name: "Organiser",
-    background_img: "assets/Organizer.png",
+    category_name: "Player",
+    background_img: "assets/Player.png",
+    font_color: "white"
 },{
     category_name: "Member",
     background_img: "assets/Member.png",
+    font_color: "white"
 },{
-    category_name: "Admin",
-    background_img: "assets/Admin.png",
+    category_name: "Worker",
+    background_img: "assets/Worker.png",
+    font_color: "white"
+},{
+    category_name: "Service Provider",
+    background_img: "assets/ServiceProvider.png",
+    font_color: "black"
 }]
 
 function printIdCard() {
@@ -147,7 +159,7 @@ function printIdCard() {
 document.addEventListener('DOMContentLoaded', function() {
     // Get form inputs
     var firstNameInput = document.getElementById('firstName');
-    var lastNameInput = document.getElementById('lastName');
+    var SubCategoryInput = document.getElementById('SubCategory');
     var profilePhotoInput = document.getElementById('profilePhoto');
     var categoryInput = document.getElementById('category');
 
@@ -157,20 +169,25 @@ document.addEventListener('DOMContentLoaded', function() {
     var idCardImage = document.querySelector('.preview .id-card img');
     var categoryIdCard = document.getElementById('category_print');
     var idCardPreview = document.getElementById('id-card-id');
+    var subcategoryPrintPreview = document.getElementById('subcategory_print');
+
 
     // Add event listeners to form inputs
     firstNameInput.addEventListener('input', updateIdCardPreview);
-    lastNameInput.addEventListener('input', updateIdCardPreview);
     profilePhotoInput.addEventListener('change', updateIdCardPreview);
     categoryInput.addEventListener('change', updateIdCardPreview);
+    SubCategoryInput.addEventListener('input', updateIdCardPreview);
+
 
     // Function to update ID card preview
     function updateIdCardPreview() {
-        idCardFirstName.textContent = firstNameInput.value + ' ' +lastNameInput.value;
-        categoryIdCard.textContent = categoryInput.value;
+        idCardFirstName.textContent = firstNameInput.value;
+        // categoryIdCard.textContent = categoryInput.value;
         let _tmp = background_logic.find(i=>i.category_name===categoryInput.value);
         idCardPreview.style.backgroundImage = "url('"+_tmp.background_img+"')";
         idCardPreview.style.backgroundSize='cover';
+        idCardPreview.style.color = _tmp.font_color;
+        subcategoryPrintPreview.textContent = SubCategoryInput.value;
         
 
         // Display profile photo if selected
