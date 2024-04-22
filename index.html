@@ -113,12 +113,11 @@
     </div>
     
     <div class="preview-container">
-        <h2>ID Card Preview</h2>
         <div class="preview" id="123">
             <div class="id-card" id="id-card-id">
                 <!-- <h2> T10 KPL</h2> -->
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTk1wr1yrOBQiwirwFdBeIUAeIU9vPg09-NpaXWEipuyQ&s" alt="Event Logo">
-                <h3 id="fullName">First Name Last Name</h3>
+                <img src="assets/profile.png" alt="Event Logo">
+                <h3 id="fullName">First Name</h3>
                 <!-- <p id="category_print">Category</p> -->
                 <p id="subcategory_print"></p>
             </div>
@@ -194,7 +193,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (profilePhotoInput.files && profilePhotoInput.files[0]) {
             var reader = new FileReader();
             reader.onload = function (e) {
-                idCardImage.src = e.target.result;
+                idCardImage.src = e.target.result;s
             };
             reader.readAsDataURL(profilePhotoInput.files[0]);
         }
