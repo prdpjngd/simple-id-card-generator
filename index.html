@@ -73,7 +73,8 @@
         margin-top: 140px;
         margin-left: 60px;
         margin-right: auto;
-        background-image: cover;
+        object-fit: cover;
+        object-position: top;
     }
     .id-card h3 {
         margin-top: 15px;
@@ -193,7 +194,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (profilePhotoInput.files && profilePhotoInput.files[0]) {
             var reader = new FileReader();
             reader.onload = function (e) {
-                idCardImage.src = e.target.result;s
+                idCardImage.src = e.target.result;
             };
             reader.readAsDataURL(profilePhotoInput.files[0]);
         }
